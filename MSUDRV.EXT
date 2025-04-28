@@ -1,0 +1,1 @@
+	global	msuplay_l ; make MSU-1 playback routine a global label
