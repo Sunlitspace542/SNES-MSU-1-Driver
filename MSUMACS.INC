@@ -1,5 +1,6 @@
 ; Macros, written for Argonaut Software's assembler.
 ; Note: savemode saves the last called processor mode macro, return mode inserts the last called processor mode macro.
+; Macros are intended to be run in a8 mode unless otherwise specified.
 ;-------------------------------------------------------------
 	; define an MSU-1 track in MSUTRKS.INC
 msutrack	macro	[track,num]
