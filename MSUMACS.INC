@@ -49,8 +49,8 @@ msustop	macro
 ;-------------------------------------------------------------
 	;Pause MSU-1 audio
 msupause	macro
-	stz	msu_volume
-	stz	msu_control
+	lda	#audiostate_none
+	sta	msu_control
 	endm
 ;-------------------------------------------------------------
 	;Resume MSU-1 audio
