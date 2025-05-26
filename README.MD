@@ -2,6 +2,7 @@ SNES MSU-1 Driver
 =======================
 
 This is the MSU-1 driver I wrote for Star Fox CD, cleaned up to be presentable for an open source release now that it is stable.  
+  
 I couldn't find much MSU-1 documentation when I started, so I hope this library helps you.  
   
 Please credit me if you use this code in your software or make any derivatives of this code.  
