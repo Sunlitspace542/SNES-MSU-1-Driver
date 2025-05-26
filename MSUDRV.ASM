@@ -59,12 +59,12 @@ msuplay_l
 ; Can stream up to 1 memory bank's worth of data and then some (65k bytes)
 ; Inputs:
 ; MSU seek port should be set before calling
-; msu_dest_ptr = 16-bit WRAM pointer to where data should be written, set before calling
+; msu_dest_zptr = 16-bit zeropage pointer to where data should be written, set before calling
 ; msu_read_len = len data to read out, set before calling
 ;
 ; Uses:
-; msu_dest_zptr = msu_dest_ptr is copied to here
-; Y = data offset
+; Y = data destination address offset
+; A = general operations
 ;
 ; Clobbers: A,Y
 ;
@@ -72,10 +72,7 @@ msuplay_l
 
 msuread_l
 	ai16
-	; copy dest ptr to zp for fast access
-	ldy #0
-	lda msu_dest_ptr
-	sta msu_dest_zptr
+	ldy #0	; initialize Y
 
 .msureadloop
 .waitbusyclear	; wait for data busy flag clear

@@ -15,15 +15,11 @@
 	; Length of data to read out from .msu file
 	alc	msu_read_len,2
 
-	; Pointer to MSU-1 data stream destination address.
-	; copied to msu_dest_zptr when msuread_l is executed.
-	alc	msu_dest_ptr,2
-
 	; set to 1 to trigger fadeout
 	zalc	msufadeflag,1	; MUST BE IN ZEROPAGE!!
 
 	; current chip volume for fade routine
 	zalc	curmsuvolume,1	; MUST BE IN ZEROPAGE!!
 
-	; Pointer to MSU-1 data stream destination address. (zeropage copy used by msuread_l)
+	; Pointer to MSU-1 data stream destination address
 	zalc	msu_dest_zptr,2	; MUST BE IN ZEROPAGE!!
