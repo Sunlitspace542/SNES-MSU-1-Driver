@@ -1,5 +1,5 @@
 ; MSUDRV.EXT
-; MSU-1 driver macros.
+; Globalizes MSU-1 driver routine labels.
 ; Copyright (c) 2025 Sunlit
 ; Released under the MIT License
 ;
@@ -7,4 +7,4 @@
 ; It was a pain to write, and it would be greatly appreciated if you did!
 ; It's not like you have to pay me or anything. Crediting me is free.
 
-	global	msuplay_l,msuread_l ; make MSU-1 playback routine a global label
+	global	msuplay_l,msuread_l ; make MSU-1 playback and data streaming routine global labels
