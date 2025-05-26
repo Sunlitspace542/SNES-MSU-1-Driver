@@ -78,7 +78,6 @@ msuread_l
 	sta msu_dest_zptr
 
 .msureadloop
-	lda	#0	; clear A
 .waitbusyclear	; wait for data busy flag clear
 	a8
 	lda msu_status
