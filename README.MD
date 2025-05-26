@@ -5,6 +5,7 @@ This is the MSU-1 driver I wrote for Star Fox CD, cleaned up to be presentable f
   
 I couldn't find much MSU-1 documentation when I started, so I hope this library helps you.  
   
+Released under the MIT License.  
 Please credit me if you use this code in your software or make any derivatives of this code.  
 It was a pain to write, and it would be greatly appreciated if you did!  
 It's not like you have to pay me or anything. Crediting me is free.  
