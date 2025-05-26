@@ -89,10 +89,7 @@ msuread_l
 
 	; dec len counter
 	a16
-	lda msu_read_len
-	sec
-	sbc	#1
-	sta	msu_read_len
+	dec	msu_read_len
 	lda	msu_read_len
 	bne .msureadloop
 	rtl
