@@ -82,8 +82,7 @@ msuread_l
 .waitbusyclear	; wait for data busy flag clear
 	a8
 	lda msu_status
-	bit	#status_databusy&FF
-	beq	.waitbusyclear
+	bmi	.waitbusyclear
 
 	lda msu_read	; read byte
 	sta [msu_dest_zptr],y	; write to dest
