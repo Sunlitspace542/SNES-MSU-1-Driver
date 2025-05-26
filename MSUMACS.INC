@@ -1,5 +1,14 @@
+; MSUMACS.INC
+; MSU-1 driver macros.
+; Copyright (c) 2025 Sunlit
+; Released under the MIT License
+;
+; Please credit me if you use this code in your software or make any derivatives of this code.
+; It was a pain to write, and it would be greatly appreciated if you did!
+; It's not like you have to pay me or anything. Crediting me is free.
+
 ; Macros, written for Argonaut Software's assembler.
-; Note: savemode saves the last called processor mode macro, return mode inserts the last called processor mode macro.
+; Note: savemode saves the last called processor mode macro, returnmode inserts the last called processor mode macro.
 ; Macros are intended to be run in a8 mode unless otherwise specified.
 ;-------------------------------------------------------------
 	; define an MSU-1 track in MSUTRKS.INC
@@ -53,8 +62,13 @@ msupause	macro
 	sta	msu_control
 	endm
 ;-------------------------------------------------------------
+	;Set resume point for current track, when this track plays again, it'll continue where it left off
+msusetresume	macro
+	LDA #audiostate_resume
+	STA msu_control
+	endm
+;-------------------------------------------------------------
 	;Resume MSU-1 audio
-	;Audiostate can be repeat,norepeat
 msuresume	macro	[audiostate]
 	LDA #audiostate_{audiostate}
 	STA msu_control
@@ -79,3 +93,37 @@ msufade_alt	macro
 	returnmode
 	endm
 ;-------------------------------------------------------------
+; set MSU-1 data seek port
+msu1_setseekport	macro [addr]
+	lda #{addr}_byte1
+	sta msu_seek
+	lda #{addr}_byte2
+	sta msu_seek2
+	lda #{addr}_byte3
+	sta msu_seek3
+	lda #{addr}_byte4
+	sta msu_seek4
+	ENDM
+;--------------------------------------------------------------
+; Stream data from .MSU file
+; dest = dest addr
+; addr = addr of data in .msu file
+; example:
+;	msustream	$00D0,msu1data_teststring
+msustream	macro	[dest,addr]
+	pha
+	phy
+	savemode
+	a8
+	msu1_setseekport	{addr}
+	a16
+	lda	#{dest}
+	sta	msu_dest_ptr
+	lda	#{addr}len
+	sta msu_read_len
+	jsl	msuread_l
+	returnmode
+	ply
+	pla
+	ENDM
+;--------------------------------------------------------------

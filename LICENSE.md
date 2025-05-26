@@ -1,3 +1,9 @@
+NOTICE
+======
+Please credit me if you use this code in your software or make any derivatives of this code.
+It was a pain to write, and it would be greatly appreciated if you did!
+It's not like you have to pay me or anything. Crediting me is free.
+
 The MIT License (MIT)
 =====================
 

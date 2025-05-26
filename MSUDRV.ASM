@@ -1,8 +1,23 @@
+; MSUDRV.ASM
+; Main MSU-1 Driver Routines.
+; Copyright (c) 2025 Sunlit
+; Released under the MIT License
+;
+; Please credit me if you use this code in your software or make any derivatives of this code.
+; It was a pain to write, and it would be greatly appreciated if you did!
+; It's not like you have to pay me or anything. Crediting me is free.
+
+
 	INCPUBLICS	ext\msudrv.ext
 
 ; Standard playback volume
 ; $FE is divisible by 2, so if you want to do a faster fade (dec 2x instead of 1x) it'll work
-msuplaybackvolume	equ	$FE
+
+msu_mastervol		equ	254	; Master volume, set to 255 if using alternate fade decrement code
+
+
+; set to 1 to handle missing tracks
+msudebug	equ	0
 
 ; see MSUMACS.inc for usage
 ;-------------------------------------------------------------
@@ -23,15 +38,69 @@ msuplay_l
 	bvs	.msuaudiobusyloop ; Loop until it isn't
 
 	pha	; Save audiostate to stack
-	lda	#msuplaybackvolume	; Set volume
+	lda	#msu_mastervol	; Set volume
 	sta	curmsuvolume
 	sta	msu_volume
 	pla	; Pull audiostate and start playing music
 	sta	msu_control
+
+	IFNE	msudebug
+	; ERROR CHECK
+	lda msu_status
+	bit #status_trackmissing
+	beq .donemsuplayback ; error bit set?
+.msufailed
+	stz	msu_volume	; Mute MSU-1 to avoid loud buzzing on hardware
+.donemsuplayback
+	ENDC
+	rtl
+;-------------------------------------------------------------
+; Streams from .msu file to a RAM address.
+; Can stream up to 1 memory bank's worth of data and then some (65k bytes)
+; Inputs:
+; MSU seek port should be set before calling
+; msu_dest_ptr = 16-bit WRAM pointer to where data should be written, set before calling
+; msu_read_len = len data to read out, set before calling
+;
+; Uses:
+; msu_dest_zptr = msu_dest_ptr is copied to here
+; Y = data offset
+;
+; Clobbers: A,Y
+;
+; Change DBR if needed to target destination bank
+
+msuread_l
+	ai16
+	; copy dest ptr to zp for fast access
+	ldy #0
+	lda msu_dest_ptr
+	sta msu_dest_zptr
+
+.msureadloop
+	lda	#0	; clear A
+.waitbusyclear	; wait for data busy flag clear
+	a8
+	lda msu_status
+	bit	#status_databusy&FF
+	beq	.waitbusyclear
+
+	lda msu_read	; read byte
+	sta [msu_dest_zptr],y	; write to dest
+	iny	; inc dest offset
+
+	; dec len counter
+	a16
+	lda msu_read_len
+	sec
+	sbc	#1
+	sta	msu_read_len
+	lda	msu_read_len
+	bne .msureadloop
 	rtl
 ;-------------------------------------------------------------
 ; Detects presence of the MSU-1
-; Ideally you would run this at boot
+; Ideally, you would run this at boot
 CheckForMSU_l
 	lda	MSU_ID	; Get MSU-1 ID register
 	cmp	#$53	; MSU_ID == 'S' ?

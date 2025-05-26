@@ -1,8 +1,8 @@
 ;########################################
 ;# MEDIA STREAMING UNIT (MSU) REGISTERS #
 ;########################################
-; based on docs from
-; https://helmet.kafuka.org/msu1.htm
+; based on docs from https://helmet.kafuka.org/msu1.htm, originally written by Kawa.
+; Extended to modern MSU-1 standard by Sunlit. You do not need to credit me to use this component.
 
 ; The MSU1 registers range from 
 ; $2000 to $2007. Their functions
@@ -11,16 +11,16 @@
 
 ; READING
 msu_status	equ	$2000 ; Status port
-msu_read	equ	$2001 ; Data read port
-msu_id		equ	$2002 ; Identification bytes
-msu_id2     equ $2003 ; contains ASCII string "S-MSU1"
+msu_read	equ	$2001 ; Data read port (byte)
+msu_id		equ	$2002 ; Identification bytes, contains ASCII string "S-MSU1"
+msu_id2     equ $2003
 msu_id3     equ $2004
 msu_id4     equ $2005
 msu_id5     equ $2006
 msu_id6     equ $2007
 
 ; WRITING
-msu_seek	equ	$2000 ; Data seek port
+msu_seek	equ	$2000 ; Data seek port bytes, forms a 32 bit address
 msu_seek2	equ	$2001
 msu_seek3	equ	$2002
 msu_seek4	equ	$2003
@@ -47,7 +47,8 @@ status_revision3        equ 00000001b ; 1
 ; ## MSU_CONTROL register ($2007) ##
 ; Bit 0: Play track flag
 ; Bit 1: Repeat track flag
-; Bit 2: Resume track flag (may not be available depending on your emulator's implementation of the MSU-1, most modern ones that are still being updated should have it)
+; Bit 2: Resume track flag
+;        (may not be available depending on your emulator/hardware's implementation of the MSU-1, most modern ones that are still being updated should have it)
 ; Bits 3 - 7: unused
 audiostate_none		equ	00000000b ; 0
 audiostate_norepeat	equ	00000001b ; 1
