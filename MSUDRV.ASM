@@ -80,7 +80,7 @@ msuread_l
 	lda msu_status
 	bmi	.waitbusyclear
 
-	lda msu_read	; read out a byte, chip will return the current byte and automatically increment the seek port address by 1
+	lda msu_read	; read out a byte, chip will return the next byte and automatically increment the seek port address by 1
 	sta [msu_dest_zptr],y	; write to dest
 	iny	; inc dest offset
 

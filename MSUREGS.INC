@@ -11,7 +11,7 @@
 
 ; READING
 msu_status	equ	$2000 ; Status port
-msu_read	equ	$2001 ; Data read port - when read, returns the current seek port byte, then increments the seek port address by 1
+msu_read	equ	$2001 ; Data read port - when read, returns the next data byte, then increments the seek port address by 1
 msu_id		equ	$2002 ; Identification bytes, contains ASCII string "S-MSU1"
 msu_id2     equ $2003
 msu_id3     equ $2004
