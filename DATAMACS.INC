@@ -20,11 +20,11 @@ getmsu1dataaddr	macro	[label]
 {label}_byte4	equ	(({label})>>24)&$FF
 
 	fopen	+msudata.inc
-	printf	"{label}%tequ%t%x{label} %n"
-	printf	"{label}_byte1%tequ%t%x{label}_byte1 %n"
-	printf	"{label}_byte2%tequ%t%x{label}_byte2 %n"
-	printf	"{label}_byte3%tequ%t%x{label}_byte3 %n"
-	printf	"{label}_byte4%tequ%t%x{label}_byte4 %n"
-	printf	"{label}len%tequ%t%x{label}len %n"
+	printf	"{label}%tequ%t$",:${label},"%n"
+	printf	"{label}_byte1%tequ%t$",:${label}_byte1,"%n"
+	printf	"{label}_byte2%tequ%t$",:${label}_byte2,"%n"
+	printf	"{label}_byte3%tequ%t$",:${label}_byte3,"%n"
+	printf	"{label}_byte4%tequ%t$",:${label}_byte4,"%n"
+	printf	"{label}len%tequ%t$",:${label}len,"%n"
 	fclose	msudata.inc
 	ENDM
