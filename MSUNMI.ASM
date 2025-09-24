@@ -9,10 +9,12 @@
 
 msu_voldecrement	equ 3	; Amount to decrease per frame during fadeout if using alternate fadeout code
 
-; Code that uploads the MSU-1 fade handler to RAM
-msufadehanaddr equ	$0162	; where the fade handler will go in RAM
+; Code to upload the MSU-1 fade handler to RAM (if needed for some reason)
+; You can integrate the fade handler into your NMI routine directly and skip this.
+msufadehanaddr	equ	$0162	; where the fade handler will go in RAM
 msufadehanbank	equ	$1f	; source bank of fade handler code
 
+upload_msufadehan_l
 	ai16
 	ldx	#msufadehan&WM ; src data addr
 	ldy	#msufadehanaddr ; dest data addr
@@ -22,6 +24,7 @@ msufadehanbank	equ	$1f	; source bank of fade handler code
 	ELSEIF ; if SlowROM, do this
 	mvn	msufadehanbank,$00
 	ENDC
+	rtl
 
 ; Code that fades the MSU-1 audio when the fade flag is set
 msufadehan
